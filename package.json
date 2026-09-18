@@ -94,7 +94,7 @@
     "ros-madair": "https://github.com/flaxandteal/ros-madair/releases/download/v0.1.0-alpha.14/ros-madair-0.1.0-alpha.14.tgz",
     "starches": "github:flaxandteal/starches#v0.2.1-alpha.131",
     "starches-builder": "https://github.com/flaxandteal/starches-builder/releases/download/v2.0.0-alpha.131/starches-builder-v2.0.0-alpha.131.tar.gz",
-    "swiper": "^12.0.3",
+    "swiper": "^14.2.0",
     "toml": "^3.0.0",
     "tsx": "^4.21.0"
   },
