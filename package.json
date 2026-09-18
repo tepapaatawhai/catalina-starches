@@ -114,7 +114,7 @@
     "jsdom": "^26.1.0",
     "potree-core": "^2.0.10",
     "start-server-and-test": "^1.15.0",
-    "stylelint": "^15.0.0",
+    "stylelint": "^17.15.0",
     "stylelint-config-standard": "^34.0.0",
     "three": "^0.175.0",
     "ts-node": "^10.9.2",
