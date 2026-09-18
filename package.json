@@ -118,7 +118,7 @@
     "stylelint-config-standard": "^34.0.0",
     "three": "^0.175.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3",
+    "typescript": "^7.0.2",
     "vite": "^6.3.5",
     "vite-hugo-plugin": "^5.1.0",
     "vitest": "^3.2.3"
