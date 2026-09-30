@@ -1,0 +1,76 @@
+{{- if not (.Page.Store.Get "notice-style-loaded-flag") -}}
+<link href="https://unpkg.com/maplibre-gl@^5.3.1/dist/maplibre-gl.css" rel="stylesheet" />
+<link rel="stylesheet" href="{{ "css/map.css" | absURL }}">
+<link rel="stylesheet" href="{{ "css/cleangov.css" | absURL }}">
+<link rel="stylesheet" href="{{ "pagefind/pagefind-modular-ui.css" | absURL }}" />
+<link rel="stylesheet" href="{{ "css/map-controls.css" | absURL }}">
+<link rel="stylesheet" href="{{ "css/custom.css" | absURL }}">
+
+{{ partial "starches/pagefind-wasm-fallback.html" . }}
+{{ partial "starches/csp-actions.html" . }}
+
+{{ $baseAssets := (slice "map.ts" "search.ts") }}
+{{ range $baseAssets }}
+{{- $js := resources.Get . -}}
+{{ $params := (dict "search_config" $.Params.search_config "map_config" $.Params.map_config "map_api_keys" ($.Site.Params.map_api_keys | default dict) "is_production" hugo.IsProduction ) }}
+{{ $sourceMap := cond hugo.IsProduction "" "inline" }}
+{{ $opts := dict "sourceMap" $sourceMap "minify" hugo.IsProduction "target" "es2022" "format" "esm" "params" $params }}
+{{ $js = $js | js.Build $opts }}
+{{ if hugo.IsProduction }}
+  {{ $js = $js | fingerprint }}
+{{ end }}
+<script
+  src="{{ $js.RelPermalink }}"
+  {{ if hugo.IsProduction }}integrity="{{ $js.Data.Integrity }}"{{ end }}
+  type="module">
+</script>
+{{ end }}
+{{- .Page.Store.Set "notice-style-loaded-flag" true -}}
+{{- end -}}
+<div id="map-row">
+{{ $starches_config := site.Params.starches_config }}
+{{ with .Params.starches_config }}
+    {{ $starches_config = . }}
+{{ end }}
+{{ with $starches_config }}
+    <div id="starches-base-configuration" data-config="{{ . | jsonify }}" hidden></div>
+{{ end }}
+{{ if .Params.includeSearch }}
+    <div id="starches-has-search" hidden></div>
+    <div id="search-column">
+        <div id="search"></div>
+        {{ partial "starches/map-filters.html" . }}
+        <div id="filter-warning" class="filter-warning-hidden">{{ i18n "starches_filter_reset" | safeHTML }}</div>
+        <div id="result-count" class="result-count"></div>
+        {{ $helpContent := i18n "starches_help_content" }}
+        {{ with $helpContent }}
+        <button id="help-toggle" class="starches-help-toggle" aria-expanded="true" aria-controls="help-content">
+          {{ i18n "starches_help_toggle_label" }}
+        </button>
+        <div id="help-content" class="starches-help-content">
+          {{ . | markdownify }}
+        </div>
+        {{ end }}
+        <div id="instructions">
+            <p>{{ i18n "starches_search_prompt" }}</p>
+            <p>{{ i18n "starches_search_result_actions" | safeHTML }}</p>
+        </div>
+        <div id="results">
+        </div>
+    </div>
+
+{{ end }}
+    <div id="map-column">
+        <div id="filter-warning" class="filter-warning-hidden">{{ i18n "starches_filter_reset" | safeHTML }}</div>
+        <div id="map-container">
+{{ if .Params.includeSearch }}
+            <div id="map-cover">
+                <div id="map-instructions">
+                    {{ i18n "starches_map_instructions" | safeHTML }}
+                </div>
+            </div>
+{{ end }}
+            <div class="map" data-center="{{ .Params.center }}" data-zoom="{{ .Params.zoom }}" {{ if .Params.mobileZoom }}data-zoom-mobile="{{ .Params.mobileZoom }}"{{ end }}></div>
+        </div>
+    </div>
+</div>

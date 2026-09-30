@@ -47,6 +47,12 @@ module:
       target: static/wasm/ros-madair/ros_madair.js
     - source: node_modules/ros-madair/pkg/ros_madair_bg.wasm
       target: static/wasm/ros-madair/ros_madair_bg.wasm
+    # maplibre-gl 6 loads its web worker from a separate file resolved
+    # relative to the bundle URL, so both files must sit at the site root.
+    - source: node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs
+      target: static/maplibre-gl-worker.mjs
+    - source: node_modules/maplibre-gl/dist/maplibre-gl-shared.mjs
+      target: static/maplibre-gl-shared.mjs
 
 security:
   funcs:
