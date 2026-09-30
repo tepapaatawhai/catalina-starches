@@ -107,7 +107,7 @@
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.14.0",
     "@vitest/ui": "^3.2.3",
-    "cypress": "^12.17.0",
+    "cypress": "^16.1.1",
     "cypress-axe": "^1.4.0",
     "dotenv-cli": "^8.0.0",
     "happy-dom": "^20.14.5",
