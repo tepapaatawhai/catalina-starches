@@ -110,7 +110,7 @@
     "cypress": "^12.17.0",
     "cypress-axe": "^1.4.0",
     "dotenv-cli": "^8.0.0",
-    "happy-dom": "^18.0.1",
+    "happy-dom": "^20.14.5",
     "jsdom": "^26.1.0",
     "potree-core": "^2.0.10",
     "start-server-and-test": "^1.15.0",
