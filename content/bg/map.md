@@ -12,7 +12,7 @@ center: "[172.5, -41.5]"
 zoom: 5
 mobileZoom: 3
 map_config:
-  defaultBasemap: "vector"
+  defaultBasemap: "map"
   basemaps:
     - id: "map"
       label: "Map"

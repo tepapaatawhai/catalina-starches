@@ -1,0 +1,114 @@
+{{- if not (.Page.Store.Get "asset-style-loaded-flag") -}}
+<link href="https://unpkg.com/maplibre-gl@^5.3.1/dist/maplibre-gl.css" rel="stylesheet" />
+<link rel="stylesheet" href="{{ "css/map.css" | absURL }}">
+<link rel="stylesheet" href="{{ "css/cleangov.css" | absURL }}">
+<link rel="stylesheet" href="{{ "css/custom.css" | absURL }}">
+
+{{ partial "starches/csp-actions.html" . }}
+
+{{ $baseAssets := (slice "asset.ts") }}
+{{ range $baseAssets }}
+{{- $js := resources.Get . -}}
+{{ $params := (dict "search_config" site.Params.search_config "is_production" hugo.IsProduction "default_show_full_asset" site.Params.default_show_full_asset "starches" site.Params.starches "ros_madair" site.Params.ros_madair ) }}
+{{ $sourceMap := cond hugo.IsProduction "" "inline" }}
+{{ $opts := dict "sourceMap" $sourceMap "minify" hugo.IsProduction "target" "es2022" "format" "esm" "params" $params }}
+{{ $js = $js | js.Build $opts }}
+{{ if hugo.IsProduction }}
+  {{ $js = $js | fingerprint }}
+{{ end }}
+<script
+  src="{{ $js.RelPermalink }}"
+  {{ if hugo.IsProduction }}integrity="{{ $js.Data.Integrity }}"{{ end }}
+  type="module">
+</script>
+{{ end }}
+{{- .Page.Store.Set "asset-style-loaded-flag" true -}}
+{{- end -}}
+
+<div id="demo-warning">
+  This is a front-end demo with full datasets - if you see this banner, potentially-sensitive data will be loaded, even it is not displayed (<a href="#" id="swap-link"></a>)
+</div>
+
+<div class="govuk-header__container govuk-width-container" id="dfc-registry">
+</div>
+
+<div class="navigation-container">
+  <div class="nav-back">
+    <a href="{{ site.BaseURL }}" class="govuk-button govuk-button--secondary back-link">{{ i18n "starches_return_to_search" }}</a>
+    <button class="govuk-button govuk-button--secondary" data-module="govuk-button" data-action="copy-link" title="{{ i18n "starches_tooltip_copy_link" }}">
+      {{ i18n "starches_copy_link" }}
+    </button>
+  </div>
+  <div class="asset-breadcrumbs" id="search-breadcrumbs">
+    <span id="breadcrumb-search-term"></span>
+    <span id="breadcrumb-filters"></span>
+    <span id="breadcrumb-geo"></span>
+  </div>
+</div>
+
+<div class="modern-navigation" id="top-nav-container">
+  <div class="nav-position" id="position-counter-top">
+    {{/* Populated by JavaScript */}}
+  </div>
+  <div class="nav-buttons" id="top-navigation">
+    <a href="#" class="govuk-button govuk-button--secondary" id="prev-asset-top" style="display: none;">{{ i18n "starches_previous" }}</a>
+    <a href="#" class="govuk-button govuk-button--secondary" id="next-asset-top" style="display: none;">{{ i18n "starches_next" }}</a>
+  </div>
+</div>
+
+<div id="map" class="maplibregl-map"></div>
+<h1 id="asset-title"></h1>
+<h4 id="asset-model-name" class="asset-model-subtitle"></h4>
+
+<div id="related-resources-banner" class="related-resources-banner" hidden>
+  <button class="related-resources-banner__toggle" aria-expanded="false" aria-controls="related-resources-banner__content">
+    <span class="related-resources-banner__label">{{ i18n "starches_related_resources" }}</span>
+    <span class="related-resources-banner__count"></span>
+    <span class="related-resources-banner__chevron" aria-hidden="true"></span>
+  </button>
+  <div id="related-resources-banner__content" class="related-resources-banner__content" hidden>
+  </div>
+</div>
+
+<div class="modern-navigation" id="bottom-nav-container">
+  <div class="nav-back">
+    <a href="{{ site.BaseURL }}" class="govuk-back-link back-link">{{ i18n "starches_return_to_search" }}</a>
+  </div>
+  <div class="nav-position" id="position-counter-bottom">
+    {{/* Populated by JavaScript */}}
+  </div>
+  <div class="nav-buttons" id="bottom-navigation">
+    <a href="#" class="govuk-button govuk-button--secondary" id="prev-asset-bottom" style="display: none;">{{ i18n "starches_previous" }}</a>
+    <a href="#" class="govuk-button govuk-button--secondary" id="next-asset-bottom" style="display: none;">{{ i18n "starches_next" }}</a>
+  </div>
+</div>
+
+<div id="asset">
+</div>
+
+<div id="resource-relations" hidden>
+</div>
+
+<dialog id="asset-dialog" aria-labelledby="asset-dialog__heading">
+<div id="asset-dialog__heading"></div>
+
+<div id="asset-dialog__content"></div>
+
+<button class="govuk-button dialog-cancel" type="button" id="asset-dialog__cancel"
+    data-action="close-dialog" data-target="asset-dialog">{{ i18n "starches_cancel" }}</button>
+</dialog>
+
+<dialog id="geojson-dialog" aria-labelledby="geojson-dialog__heading">
+  <div class="geojson-dialog__header">
+    <h2 id="geojson-dialog__heading">{{ i18n "starches_geometry" }}</h2>
+    <button class="govuk-button govuk-button--secondary" type="button" id="geojson-dialog__close">{{ i18n "starches_close" }}</button>
+  </div>
+  <div id="geojson-dialog__map"></div>
+</dialog>
+
+<div id="legacy-record-container">
+<h2>{{ i18n "starches_legacy_record" }}</h2>
+
+<pre id="legacy-record">
+</pre>
+</div>
