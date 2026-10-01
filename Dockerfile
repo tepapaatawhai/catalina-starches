@@ -57,9 +57,11 @@ RUN hugo mod get && hugo
 RUN npm run pagefind:fallback
 
 # ---- SERVE WITH NGINX ----
-FROM nginxinc/nginx-unprivileged:1.25-alpine
+FROM nginxinc/nginx-unprivileged:1.29-alpine
 WORKDIR /usr/share/nginx/html
 USER root
+# Pick up Alpine security patches (openssl, libxml2, expat) newer than the base image
+RUN apk upgrade --no-cache
 COPY --from=build /app/docs .
 USER 33
 EXPOSE 8080
