@@ -131,6 +131,9 @@
   "overrides": {
     "@esri/maplibre-arcgis": {
       "maplibre-gl": "$maplibre-gl"
+    },
+    "wasm-opt": {
+      "tar": "^7.5.19"
     }
   },
   "private": true,
