@@ -113,7 +113,7 @@
     "happy-dom": "^20.14.5",
     "jsdom": "^26.1.0",
     "potree-core": "^2.0.10",
-    "start-server-and-test": "^1.15.0",
+    "start-server-and-test": "^3.0.12",
     "stylelint": "^15.0.0",
     "stylelint-config-standard": "^34.0.0",
     "three": "^0.175.0",
