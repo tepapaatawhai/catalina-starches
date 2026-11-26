@@ -96,7 +96,7 @@
     "starches-builder": "https://github.com/flaxandteal/starches-builder/releases/download/v2.0.0-alpha.131/starches-builder-v2.0.0-alpha.131.tar.gz",
     "swiper": "^12.0.3",
     "toml": "^4.2.0",
-    "tsx": "^4.21.0"
+    "tsx": "^4.23.15"
   },
   "description": "Static Asset Viewer",
   "devDependencies": {
@@ -119,7 +119,7 @@
     "three": "^0.175.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
-    "vite": "^6.4.3",
+    "vite": "^8.3.8",
     "vite-hugo-plugin": "^5.1.0",
     "vitest": "^3.2.6"
   },
